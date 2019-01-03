@@ -8,6 +8,9 @@ class App extends Component {
     currentUser: {},
     token: "",
     isLoggedIn: false,
+    city: {},
+    cities: [],
+    
   }
 
   render() {
@@ -27,11 +30,11 @@ class App extends Component {
           </p>
           <a
             className="App-link"
-            href="https://reactjs.org"
+            href="https://developer.nrel.gov/docs/cleap/"
             target="_blank"
             rel="noopener noreferrer"
           >
-            Learn React
+            Data from NREL
           </a>
         </header>
       </div>
