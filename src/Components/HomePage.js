@@ -6,6 +6,11 @@ class App extends Component {
     zipCode: "",
     cityName: "",
     cityData: {},
+    energyData: {},
+    residential: {},
+    industrial: {},
+    commercial: {},
+    cityFuel: {},
   }
 
   searchTerm = (e) => {
@@ -33,16 +38,25 @@ class App extends Component {
             return obj;
         }, {})
 
+        const a = Object.keys(filtered)[0]
+
         console.log(raw)
         console.log(currentCity)
-        console.log("City Name:",Object.keys(filtered))
+        console.log("City Name:",Object.keys(filtered)[0])
         console.log("City Object:",filtered)
+        console.log("Energy Data Object:",filtered[Object.keys(filtered)[0]].similar_places.table)
 
         this.setState({
-            cityName: Object.keys(filtered),
-            cityData: filtered
+            cityName: Object.keys(filtered)[0],
+            cityData: filtered,
+            energyData: filtered[Object.keys(filtered)[0]].similar_places.table,
+            residential: {electric_expenditure: filtered[Object.keys(filtered)[0]].similar_places.table.residential_electric_expenditure, electric_use: filtered[Object.keys(filtered)[0]].similar_places.table.residential_electric_use, gas_expenditure: filtered[Object.keys(filtered)[0]].similar_places.table.residential_gas_expenditure, gas_use: filtered[Object.keys(filtered)[0]].similar_places.table.residential_gas_use},
+            industrial: {electric_expenditure: filtered[Object.keys(filtered)[0]].similar_places.table.industrial_electric_expenditure, electric_use: filtered[Object.keys(filtered)[0]].similar_places.table.industrial_electric_use, gas_expenditure: filtered[Object.keys(filtered)[0]].similar_places.table.industrial_gas_expenditure, gas_use: filtered[Object.keys(filtered)[0]].similar_places.table.industrial_gas_use},
+            commercial: {electric_expenditure: filtered[Object.keys(filtered)[0]].similar_places.table.commercial_electric_expenditure, electric_use: filtered[Object.keys(filtered)[0]].similar_places.table.commercial_electric_use, gas_expenditure: filtered[Object.keys(filtered)[0]].similar_places.table.commercial_gas_expenditure, gas_use: filtered[Object.keys(filtered)[0]].similar_places.table.commercial_gas_use},
+            cityFuel: {diesel: filtered[Object.keys(filtered)[0]].similar_places.table.city_fuel_use_diesel, gas: filtered[Object.keys(filtered)[0]].similar_places.table.city_fuel_use_gas}
         })
-        debugger
+
+        // debugger
 
     })
 }
