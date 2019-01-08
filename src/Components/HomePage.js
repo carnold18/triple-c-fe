@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
+import ZipCodeForm from './ZipCodeForm.js';
+import EnergyDropdown from './EnergyDropdown';
+import EnergyChart from './EnergyChart.js';
 
-class App extends Component {
+class HomePage extends Component {
 
   state = {
     zipCode: "",
@@ -11,6 +14,25 @@ class App extends Component {
     industrial: {},
     commercial: {},
     cityFuel: {},
+    options: [
+      {
+          name: "Select Option",
+          value: null
+      },
+      {
+          name: "Residential",
+          value: 'residential'
+      },
+      {
+          name: "Commercial",
+          value: 'commercial'
+      },
+      {
+          name: "Industrial",
+          value: 'industrial'
+      },
+    ],
+    value: '?',
   }
 
   searchTerm = (e) => {
@@ -26,11 +48,8 @@ class App extends Component {
     fetch(NREL_URL)
     .then(response => response.json())
     .then(results => {
-        // const result = results.result[0]
         const raw = results.result
-
         const currentCity = Object.keys(results.result)[0]
-
         const filtered = Object.keys(raw)
         .filter(key => currentCity.includes(key))
         .reduce((obj, key) => {
@@ -38,13 +57,11 @@ class App extends Component {
             return obj;
         }, {})
 
-        const a = Object.keys(filtered)[0]
-
-        console.log(raw)
-        console.log(currentCity)
-        console.log("City Name:",Object.keys(filtered)[0])
-        console.log("City Object:",filtered)
-        console.log("Energy Data Object:",filtered[Object.keys(filtered)[0]].similar_places.table)
+        // console.log(raw)
+        // console.log(currentCity)
+        // console.log("City Name:",Object.keys(filtered)[0])
+        // console.log("City Object:",filtered)
+        // console.log("Energy Data Object:",filtered[Object.keys(filtered)[0]].similar_places.table)
 
         this.setState({
             cityName: Object.keys(filtered)[0],
@@ -67,25 +84,22 @@ class App extends Component {
     })
   }
 
-  render() {
+  handleSelect = (event) => {
+    this.setState({
+        value: event.target.value
+    })
+  }
 
+  render() {
 
     return (
       <div className="homepage">
-        <div className="location">
-          <form onSubmit={this.searchTerm}>
-            <input
-                type="text"
-                onChange={this.handleChange}
-                placeholder="Zip Code"
-                name="Zip Code"
-            />
-            <input type="submit" className="button small special align-center"/>
-          </form>
-        </div>
+        <ZipCodeForm handleChange={this.handleChange} searchTerm={this.searchTerm} />
+        <EnergyDropdown handleSelect={this.handleSelect} options={this.state.options} value={this.state.value} />
+        <EnergyChart />
       </div>
     );
   }
 }
 
-export default App;
+export default HomePage;
